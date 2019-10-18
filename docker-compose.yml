@@ -6,7 +6,7 @@ services:
     build: .
     ports:
       - "3000:3000" # Port de l'API exposé
-      - "9229:9229" # Expose Node process debug port (disable in production)
+      - "9229:9229" # Exposition du port Node pour le debug (ne pas utiliser en production!!!)
     environment: 
      - NODE_ENV=local
      - ES_HOST=elasticsearch
