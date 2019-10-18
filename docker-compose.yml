@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  api: # Node.js App
+    container_name: Conteneur-nodeJs
+    build: .
+    ports:
+      - "3000:3000" # Port de l'API exposé
+      - "9229:9229" # Expose Node process debug port (disable in production)
+    environment: 
+     - NODE_ENV=local
+     - ES_HOST=elasticsearch
+     - PORT=3000
+    volumes: # Le dossier qui contient les livres
+      - ./books:/usr/src/app/books
+
+  frontend: # Serveur NGINX pour l'afffichage
+    container_name:  Conteneur-nginx
+    image: nginx
+    volumes: # Le dossier publique Dir
+      - ./public:/usr/share/nginx/html
+    ports:
+      - "8080:80" # 
+
+  elasticsearch: 
+    container_name:  Conteneur-ElasticSearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    volumes: # Persistance des données dans ElasticSearch dans le volume "esdata"
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ports: # Exposition des ports Elasticsearch 
+      - "9300:9300"
+      - "9200:9200"
+
+volumes: 
+  esdata:

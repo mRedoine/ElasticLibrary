@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Elastic Recherche livres</title>
+  <meta name="description" content="Literary Classic Search Engine.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.muicss.com/mui-0.9.20/css/mui.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,700|Open+Sans" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+<div class="app-container" id="vue-instance">
+
+    
+    <div class="mui-panel">
+      <div class="mui-textfield">
+        <input v-model="searchTerm" type="text" v-on:keyup="prevResultsPage()">
+        <label>Recherche</label>
+      </div>
+    </div>
+
+  
+    <div class="mui-panel">
+      <div class="mui--text-headline">{{ numHits }} Documents relatifs trouvés</div>
+      <div class="mui--text-subhead">Pages :{{ searchOffset }} - {{ searchOffset + 9 }}</div>
+    </div>
+
+
+    <div class="mui-panel pagination-panel">
+        <button class="mui-btn mui-btn--flat" v-on:click="prevResultsPage()">Précédent</button>
+        <button class="mui-btn mui-btn--flat" v-on:click="nextResultsPage()">Suivant</button>
+    </div>
+
+   
+    <div class="search-results" ref="searchResults">
+      
+      <div class="mui-panel" v-for="hit in searchResults" v-on:click="showBookModal(hit)">
+        <div class="mui--text-title" v-html="hit.highlight.text[0]"></div>
+        <div class="mui-divider"></div>
+        <div class="mui--text-subhead">{{ hit._source.title }} - {{ hit._source.author }}</div>
+        <div class="mui--text-body2">Chapitre {{ hit._source.location }}</div>
+      </div>
+    </div>
+
+    
+    <div class="mui-panel pagination-panel">
+        <button class="mui-btn mui-btn--flat" v-on:click="prevResultsPage()">Précédent</button>
+        <button class="mui-btn mui-btn--flat" v-on:click="nextResultsPage()">Suivant</button>
+    </div>
+
+    <!-- Modale qui affiche les paragraphes du livre -->
+    <div v-if="selectedParagraph" ref="bookModal" class="book-modal">
+      <div class="paragraphs-container">
+       
+        <div class="title-row">
+          <div class="mui--text-display2 all-caps">{{ selectedParagraph._source.title }}</div>
+          <div class="mui--text-display1">{{ selectedParagraph._source.author }}</div>
+        </div>
+        <br>
+        <div class="mui-divider"></div>
+        <div class="mui--text-subhead locations-label">Sections {{ bookOffset - 5 }} à {{ bookOffset + 5 }}</div>
+        <div class="mui-divider"></div>
+        <br>
+
+        <!-- Paragraphes du livre -->
+        <div v-for="paragraph in paragraphs">
+          <div v-if="paragraph._source.location === selectedParagraph._source.location" class="mui--text-body2">
+            <strong>{{ paragraph._source.text }}</strong>
+          </div>
+          <div v-else class="mui--text-body1">
+            {{ paragraph._source.text }}
+          </div>
+          <br>
+        </div>
+      </div>
+
+     
+      <div class="modal-footer">
+        <button class="mui-btn mui-btn--flat" v-on:click="prevBookPage()">Section précédente</button>
+        <button class="mui-btn mui-btn--flat" v-on:click="closeBookModal()">Fermer</button>
+        <button class="mui-btn mui-btn--flat" v-on:click="nextBookPage()">Section suivante</button>
+      </div>
+    </div>
+</div>
+<script src="https://cdn.muicss.com/mui-0.9.28/js/mui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "Justificatifs",
+  "version": "1.0.0",
+  "description": "100 livres pris sur Guttenberg et insérés dans ElasticSearch.",
+  "scripts": {
+    "start": "node --inspect=0.0.0.0:9229 server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mRedoine/Justificatifs.git"
+  },
+  "author": "KRIOUI Redoine",
+  "license": "Freestyle",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "Pas encore définie...",
+  "dependencies": {
+    "elasticsearch": "13.3.1",
+    "joi": "13.0.1",
+    "koa": "2.4.1",
+    "koa-joi-validate": "0.5.1",
+    "koa-router": "7.2.1"
+  }
+}
