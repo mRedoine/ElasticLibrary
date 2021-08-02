@@ -21,11 +21,11 @@ function parseBookFile (filePath) {
 
   // Création de paragraphes
   const paragraphs = book
-    .slice(startOfBookIndex, endOfBookIndex) // Remove Guttenberg header and footer
-    .split(/\n\s+\n/g) // Split each paragraph into it's own array entry
-    .map(line => line.replace(/\r\n/g, ' ').trim()) // Remove paragraph line breaks and whitespace
-    .map(line => line.replace(/_/g, '')) // Guttenberg uses "_" to signify italics.  We'll remove it, since it makes the raw text look messy.
-    .filter((line) => (line && line !== '')) // Remove empty lines
+    .slice(startOfBookIndex, endOfBookIndex) // Suppression des Header et Footer de Gutenberg.
+    .split(/\n\s+\n/g) // Split chaque paragraphe dans sa propre entrée tableau.
+    .map(line => line.replace(/\r\n/g, ' ').trim()) // Suppression des nouvelles lignes et espaces.
+    .map(line => line.replace(/_/g, '')) // Suppression du "_" utilisé par Gutenberg pour signifier l'italique.
+    .filter((line) => (line && line !== '')) // Suppression des lignes vides.
 
   console.log(`Parsed ${paragraphs.length} Paragraphs\n`)
   return { title, author, paragraphs }
