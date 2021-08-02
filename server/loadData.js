@@ -55,7 +55,7 @@ async function insertBookData (title, author, paragraphs) {
     }
   }
 
-  // Insert remainder of bulk ops array
+  // Insertion dans tableau d'opérations
   await esConnection.client.bulk({ body: bulkOps })
   console.log(`J'ai indexé ${paragraphs.length - (bulkOps.length / 2)} - ${paragraphs.length}\n\n\n`)
 }
